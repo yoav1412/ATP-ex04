@@ -1,0 +1,10 @@
+cmake_minimum_required(VERSION 3.8)
+project(ATPPUzzleSolver)
+set(CMAKE_C_STANDARD 99)
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14") # enable C++11 standard
+set(SOURCE_FILES main.cpp PuzzlePiece.cpp Groups.cpp BooleanMasks.cpp)
+set(HEADER_FILES PuzzlePiece.h Groups.h BooleanMasks.h)
+add_executable(APTPuzzleSolver ${SOURCE_FILES})
+if (CMAKE_BUILD_TYPE MATCHES Debug)
+    add_definitions(-DDEBUG=1)
+endif()

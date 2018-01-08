@@ -10,6 +10,9 @@
 
 #include "Constraints.h"
 
+
+//TODO: create c'tors so that a piece can be created from something like this: {1,0,-1,1}
+
 template <int K>
 class PuzzlePiece{
 
