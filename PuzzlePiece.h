@@ -22,32 +22,38 @@ class PuzzlePiece{
     // 3. inherit code to 2d and 3d classes..
 
 public:
-    virtual int getDim();
-    virtual int* getEdges();
+    virtual int getDim() = 0;
+    virtual int* getEdges() = 0;
 };
 
 template<int K>
-class Puzzle2dPiece{ // todo: inherit from super
+class Puzzle2dPiece : public PuzzlePiece<K>{
     int _edges[NUM_2D_CONSTRAINTS];
-
-
+    int _dim = 2;
 public:
-    Puzzle2dPiece(int edges[4]){
+    Puzzle2dPiece(int edges[NUM_2D_CONSTRAINTS]){
         for (int i=0; i<NUM_2D_CONSTRAINTS; i++){
             _edges[i] = edges[i];
         }
     };
 
-
-    int getDim(){ return 2; };
+    int getDim(){ return _dim; };
     int* getEdges(){ return _edges; };
-
 };
 
 
 template<int K>
 class Puzzle3dPiece: public PuzzlePiece<K>{
     int _edges[NUM_3D_CONSTRAINTS];
+    int _dim = 3;
+public:
+    Puzzle3dPiece(int edges[NUM_3D_CONSTRAINTS]){
+        for (int i=0; i<NUM_3D_CONSTRAINTS; i++){
+            _edges[i] = edges[i];
+        }
+    };
+    int getDim(){ return _dim; };
+    int* getEdges(){ return _edges; };
 };
 
 

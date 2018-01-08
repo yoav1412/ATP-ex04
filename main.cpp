@@ -26,6 +26,4 @@ int main(){
 
     std::cout <<"DONE\n";
     return 0;
-
-
 }
