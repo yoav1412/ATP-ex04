@@ -14,7 +14,6 @@
 //TODO: create c'tors so that a piece can be created from something like this: {1,0,-1,1}
 
 
-enum Rotate {NO = 0, DEG90 = 90, DEG180 = 180, DEG270 = 270};
 
 template <int K>
 class PuzzlePiece{
@@ -35,15 +34,6 @@ class Puzzle2dPiece : public PuzzlePiece<K>{
     int _dim = 2;
 
 
-    /*
-     * return the value of the constraint of the piece at the given edge, with optional rotation.
-     */
-    int getConstraint(int edge, Rotate rotation = Rotate::NO){
-        int offset = ( (int)edge - (rotation /90) )%4;
-        offset = offset >= 0 ? offset : 4 + offset; //note offset is negative in second case.
-        return  this->_edges[offset];
-    }
-
 
 
 public:
@@ -54,16 +44,18 @@ public:
     };
 
     int getDim(){ return _dim; };
-    int* getEdges(Rotate rotation = Rotate::NO){
-        int res[NUM_2D_CONSTRAINTS];
-        for (int i=0; i<NUM_2D_CONSTRAINTS; i++) { res[i] = getConstraint(i, rotation); }
-        return res;
-    };
+    int* getEdges(){return _edges;};
 
     int getRotationsLimit(){ return ROTATION_LIMIT_2D; }
 
-
-
+    /*
+    * return the value of the constraint of the piece at the given edge, with optional rotation.
+    */
+    int getConstraint(int edge, int timesRotated){
+        int offset = ( (int)edge - (timesRotated) )%4;
+        offset = offset >= 0 ? offset : 4 + offset; //note offset is negative in second case.
+        return  this->_edges[offset];
+    }
 
 };
 
@@ -79,8 +71,12 @@ public:
         }
     };
     int getDim(){ return _dim; };
-    int* getEdges(){ return _edges; };
+    int* getEdges(){ return _edges; }; // TODO: returning address of local variable here?
     int getRotationsLimit(){ return ROTATION_LIMIT_3D; }
+    int getConstraint(int edge, int timesRotated){
+        return _edges[edge]; //TODO: for now, no support of rotations. when added, change rotation paramenter to be of an appropriate type
+    };
+
 };
 
 

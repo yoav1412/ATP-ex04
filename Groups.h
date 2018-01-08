@@ -31,13 +31,11 @@ private:
         int timesRotated = 0;
         key_t key;
         do {
-            auto edges = p->getEdges((Rotate) 90 * timesRotated);
             auto booleanMasks = BooleanMasks::getBooleanMasks(2 * (p->getDim()));
             for (auto booleanMask : booleanMasks) {
                 std::stringstream strm;
-                for (int i = 0; i < 2 *
-                                    (p->getDim()); i++) { //TODO: when we can colon-iterate over piece, would be nicer to use it here.
-                    int edge = edges[i];
+                for (int i = 0; i < 2 * (p->getDim()); i++) { //TODO: when we can colon-iterate over piece, would be nicer to use it here.
+                    int edge = p->getConstraint(i, timesRotated);
                     if (booleanMask[i]) { strm << edge; }
                     else { strm << NO_CONSTRAINT; }
                 }
@@ -52,10 +50,10 @@ private:
         } while (withRotation);
     };
 
-    key_t pieceToKey(_puzzlePiece &p){
+    key_t pieceToKey(_puzzlePiece &p, int timesRotated = 0){
         std::stringstream strm;
         for (int i=0; i < 2*p.getDim(); i++) {//TODO: when we can colon-iterate over piece, would be nicer to use it here.
-            int edge = p.getEdges()[i];
+            int edge = p.getConstraint(i, timesRotated);
             strm << edge;
         }
         return strm.str();
