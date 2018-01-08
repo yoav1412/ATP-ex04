@@ -14,8 +14,6 @@
 #include <sstream>
 #include <limits>
 
-enum Rotate {NO = 0, DEG90 = 90, DEG180 = 180, DEG270 = 270};
-
 
 template<typename _puzzlePiece>
 class Groups{
@@ -28,23 +26,30 @@ private:
 
     /*
      * insert pointer to piece p with all fitting keys in table.
-    */
-    void insertPiece(_puzzlePiece *p){
+    *///TODO: currently no support for rotations, add later. (can copy from puzzle constaintsTable)
+    void insertPiece(_puzzlePiece *p, bool withRotation = false){
+        int timesRotated = 0;
         key_t key;
-        auto booleanMasks =  BooleanMasks::getBooleanMasks(2*(p->getDim()));
-        for (auto booleanMask : booleanMasks){
-            std::stringstream strm;
-            for (int i=0; i < 2*(p->getDim()); i++ ){ //TODO: when we can colon-iterate over piece, would be nicer to use it here.
-                int edge = p->getEdges()[i];
-                if (booleanMask[i]) { strm << edge; }
-                else { strm << NO_CONSTRAINT; }
+        do {
+            auto edges = p->getEdges((Rotate) 90 * timesRotated);
+            auto booleanMasks = BooleanMasks::getBooleanMasks(2 * (p->getDim()));
+            for (auto booleanMask : booleanMasks) {
+                std::stringstream strm;
+                for (int i = 0; i < 2 *
+                                    (p->getDim()); i++) { //TODO: when we can colon-iterate over piece, would be nicer to use it here.
+                    int edge = edges[i];
+                    if (booleanMask[i]) { strm << edge; }
+                    else { strm << NO_CONSTRAINT; }
+                }
+                key = strm.str();
+                if (_table.find(key) == _table.end()) { // key doesn't exist in map yet, so create an empty set
+                    _table[key] = std::vector<_puzzlePiece *>();
+                }
+                _table[key].push_back(p);
             }
-            key = strm.str();
-            if (_table.find(key) == _table.end()) { // key doesn't exist in map yet, so create an empty set
-                _table[key] = std::vector<_puzzlePiece*>();
-            }
-            _table[key].push_back(p); //TODO: currently no support for rotations, add later. (can copy from puzzle constaintsTable)
-        }
+            timesRotated++;
+            if ( timesRotated > p->getRotationsLimit() ) { withRotation = false; }
+        } while (withRotation);
     };
 
     key_t pieceToKey(_puzzlePiece &p){
@@ -67,8 +72,6 @@ public:
         }
         return _table[key];
     };
-
-
 
 
     template <typename Iter> Groups(Iter b, Iter e){//TODO: really need this template?...

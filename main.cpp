@@ -24,6 +24,23 @@ int main(){
 
     auto filtered = grps.get(filter_piece);
 
-    std::cout <<"DONE\n";
+    std::cout <<"DONE 2D\n";
+
+    int _edges1[6] = {1,2,1,3,-5,1}; Puzzle3dPiece<5> _p1(_edges1);
+    int _edges2[6] = {4,-1,3,5,-1,1}; Puzzle3dPiece<5> _p2(_edges2);
+    int _edges3[6] = {1,1,4,-2,-5,5}; Puzzle3dPiece<5> _p3(_edges3);
+    int _edges4[6] = {1,3,2,-5,-5,4}; Puzzle3dPiece<5> _p4(_edges4);
+
+    std::vector< Puzzle3dPiece<5> > _vec;
+    _vec.push_back(_p1); _vec.push_back(_p2);_vec.push_back(_p3); _vec.push_back(_p4);
+
+    Groups< Puzzle3dPiece<5> > _grps(_vec.begin(), _vec.end());
+
+    int _filter[6] = {1,NO_CONSTRAINT,NO_CONSTRAINT,NO_CONSTRAINT,-5,NO_CONSTRAINT};
+    Puzzle3dPiece<5> _filter_piece(_filter);
+
+    auto _filtered = _grps.get(_filter_piece);
+    std::cout <<"DONE 3D\n";
+
     return 0;
 }

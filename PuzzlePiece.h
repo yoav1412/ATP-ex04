@@ -7,11 +7,14 @@
 
 #define NUM_2D_CONSTRAINTS 4
 #define NUM_3D_CONSTRAINTS 6
-
-#include "Constraints.h"
+#define ROTATION_LIMIT_2D 3
+#define ROTATION_LIMIT_3D 0 //TODO: change from 0 when adding support for 3d rotates
 
 
 //TODO: create c'tors so that a piece can be created from something like this: {1,0,-1,1}
+
+
+enum Rotate {NO = 0, DEG90 = 90, DEG180 = 180, DEG270 = 270};
 
 template <int K>
 class PuzzlePiece{
@@ -30,6 +33,19 @@ template<int K>
 class Puzzle2dPiece : public PuzzlePiece<K>{
     int _edges[NUM_2D_CONSTRAINTS];
     int _dim = 2;
+
+
+    /*
+     * return the value of the constraint of the piece at the given edge, with optional rotation.
+     */
+    int getConstraint(int edge, Rotate rotation = Rotate::NO){
+        int offset = ( (int)edge - (rotation /90) )%4;
+        offset = offset >= 0 ? offset : 4 + offset; //note offset is negative in second case.
+        return  this->_edges[offset];
+    }
+
+
+
 public:
     Puzzle2dPiece(int edges[NUM_2D_CONSTRAINTS]){
         for (int i=0; i<NUM_2D_CONSTRAINTS; i++){
@@ -38,7 +54,17 @@ public:
     };
 
     int getDim(){ return _dim; };
-    int* getEdges(){ return _edges; };
+    int* getEdges(Rotate rotation = Rotate::NO){
+        int res[NUM_2D_CONSTRAINTS];
+        for (int i=0; i<NUM_2D_CONSTRAINTS; i++) { res[i] = getConstraint(i, rotation); }
+        return res;
+    };
+
+    int getRotationsLimit(){ return ROTATION_LIMIT_2D; }
+
+
+
+
 };
 
 
@@ -54,6 +80,7 @@ public:
     };
     int getDim(){ return _dim; };
     int* getEdges(){ return _edges; };
+    int getRotationsLimit(){ return ROTATION_LIMIT_3D; }
 };
 
 
