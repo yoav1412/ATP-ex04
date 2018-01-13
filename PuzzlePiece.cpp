@@ -4,7 +4,15 @@
 
 
 #include "PuzzlePiece.h"
+#include <sstream>
+#include <iterator>
 
 
 //todo: empty c'tor?
 
+std::ostream &operator << (std::ostream &os, PuzzlePiece& piece){
+    std::stringstream result;
+    std::copy(piece._edges.begin(), piece._edges.end(), std::ostream_iterator<int>(result, " "));
+    os << result.str();
+    return os;
+}
