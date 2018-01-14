@@ -77,7 +77,7 @@ private:
 public:
     std::vector<_puzzlePiece*> get(std::initializer_list<int> constraints){
         if (constraints.size() != 2*_puzzlePiece::Dimension){
-            std::cout <<"Constraints should have 2*Dimension values"<<std::endl;
+            std::cout <<"Constraints should have 2*Dimension values, got size "<<constraints.size()<<" needed"<<2*_puzzlePiece::Dimension<<std::endl;
             throw std::invalid_argument("Constraints should have 2*Dimension values");
         }
         key_t key = constraintsToKey(constraints);

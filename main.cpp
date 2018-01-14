@@ -55,19 +55,37 @@ int main(){
     auto groups = groupPuzzlePieces(pieces.begin(), pieces.end());
     // note that there is no & on the auto below (was in previous version)
     auto some_pieces = groups.get({0, std::numeric_limits<int>::min(), 2, -5});
-    for(auto piece_ptr : pieces) {//for(auto piece_ptr : some_pieces) {
-        std::cout << piece_ptr << std::endl; // will print both pieces! //WAS *piece_ptr
+    for(auto piece_ptr : some_pieces) {//for(auto piece_ptr : some_pieces) {
+        std::cout << *piece_ptr << std::endl; // will print both pieces! //WAS *piece_ptr
     }
+    std::cout <<"finished first" << std::endl;
+
     //----Second example main:-----//
     std::list<Puzzle3dPiece<1>> pieces3 = {{0, 1, 1, 1, -1, -1}, {0, -1, 1, 1, 1, 1}};
     auto groups3 = groupPuzzlePieces(pieces3.begin(), pieces3.end());
 //     note that there is no & on the auto below (was in previous version)
     auto some_pieces3 = groups3.get({0, 1, 1, 1, 1, 1});
-    for(auto piece_ptr : pieces3) {
-        std::cout << piece_ptr << std::endl; // will print nothing! //WAS *piece_ptr
+    for(auto piece_ptr : some_pieces3) {
+        std::cout << *piece_ptr << std::endl; // will print nothing! //WAS *piece_ptr
     }
-
-
+    std::cout <<"finished second" << std::endl;
+    //--------third example:------//
+    auto joker = std::numeric_limits<int>::min();
+    std::list<Puzzle3dPiece<1>> pieces4 = {{0, 1, 1, 1, -1, -1}, {0, -1, 1, 1, 1, 1}};
+    auto groups4 = groupPuzzlePieces(pieces4.begin(), pieces4.end());
+    auto some_pieces4 = groups4.get({0, joker, 1, 1, joker, joker});
+    for(auto piece_ptr : some_pieces4) {
+        std::cout << *piece_ptr << std::endl; // will print two pieces!
+    }
+    std::cout <<"finished third" << std::endl;
+    //-----------fourth example:-----//
+    std::vector<Puzzle2dPiece<5>> pieces5 = {{0, 3, 2, -5}, {0, -2, 2, -5}};
+    auto groups5 = groupPuzzlePieces(pieces5.begin(), pieces5.end());
+    auto some_pieces5 = groups.get({0, 3, 2, std::numeric_limits<int>::min()});
+    for(auto piece_ptr : some_pieces5) {
+        std::cout << *piece_ptr << std::endl; // will print the first piece!
+    }
+    std::cout <<"finished fourth" << std::endl;
     return 0;
 
 }
