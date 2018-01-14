@@ -34,10 +34,11 @@ private:
             auto booleanMasks = BooleanMasks::getBooleanMasks(2 * (p->getDim()));
             for (auto booleanMask : booleanMasks) {
                 std::stringstream strm;
-                for (int i = 0; i < 2 * (p->getDim()); i++) { //TODO: when we can colon-iterate over piece, would be nicer to use it here.
-                    int edge = p->getConstraint(i, timesRotated);
+                int i = 0;
+                for (auto edge : *p) { //TODO: when we can colon-iterate over piece, would be nicer to use it here.
                     if (booleanMask[i]) { strm << edge; }
                     else { strm << NO_CONSTRAINT; }
+                    i++;
                 }
                 key = strm.str();
                 if (_table.find(key) == _table.end()) { // key doesn't exist in map yet, so create an empty set
@@ -59,12 +60,27 @@ private:
         return strm.str();
     };
 
-
+    //TODO: change this together with the prev onoe using spinfa of sort?
+    key_t constraintsToKey(std::initializer_list<int> constraints){
+        std::stringstream strm;
+        for (auto con:constraints){
+            if (!((con>=-_puzzlePiece::Limit && con<= _puzzlePiece::Limit) || con == NO_CONSTRAINT)){
+                std::cout <<"Constraints should have values with abs value under "<< _puzzlePiece::Limit<< "or min int value"<<std::endl;
+                throw std::invalid_argument("Constraints illegal value");
+            }
+            strm << con;
+        }
+        return strm.str();
+    }
 
 
 public:
-    std::vector<_puzzlePiece*> get(_puzzlePiece p){
-        key_t key = pieceToKey(p);
+    std::vector<_puzzlePiece*> get(std::initializer_list<int> constraints){
+        if (constraints.size() != 2*_puzzlePiece::Dimension){
+            std::cout <<"Constraints should have 2*Dimension values"<<std::endl;
+            throw std::invalid_argument("Constraints should have 2*Dimension values");
+        }
+        key_t key = constraintsToKey(constraints);
         if (_table.find(key) == _table.end() ){
             return std::vector<_puzzlePiece*>(); // no piece matches constraint -> return empty vector.
         }
@@ -77,6 +93,7 @@ public:
             insertPiece(&(*b));
         }
     };
+
 };
 
 
