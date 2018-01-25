@@ -111,7 +111,7 @@ Puzzle2dPiece<K>::Puzzle2dPiece(int edges[NUM_2D_CONSTRAINTS]){
         }
         _edges[i] = edges[i];
     }
-};
+}
 
 template <int K>
 Puzzle2dPiece<K>::Puzzle2dPiece(std::initializer_list<int> il){

@@ -9,7 +9,7 @@ std::set<std::vector<bool>> BooleanMasks::getBooleanMasks(int n){
     std::vector<bool> boolstr(n);
     _getBooleanMaskRec(n,boolstr,res);
     return res;
-};
+}
 
 
 void BooleanMasks::_getBooleanMaskRec(int n, std::vector<bool> boolstr, std::set<std::vector<bool>>& res){
@@ -23,4 +23,4 @@ void BooleanMasks::_getBooleanMaskRec(int n, std::vector<bool> boolstr, std::set
     std::vector<bool> add_false = boolstr;
     add_true[n-1] = false;
     _getBooleanMaskRec(n-1, add_false, res);
-};
+}

@@ -96,7 +96,7 @@ public:
         for (; b != e; b++ ){
             insertPiece(&(*b), rotation);
         }
-    };
+    }
 
 };
 
