@@ -34,11 +34,15 @@ private:
             auto booleanMasks = BooleanMasks::getBooleanMasks(2 * (p->getDim()));
             for (auto booleanMask : booleanMasks) {
                 std::stringstream strm;
-                int i = 0;
-                for (auto edge : *p) { //TODO: when we can colon-iterate over piece, would be nicer to use it here.
-                    if (booleanMask[i]) { strm << edge; }
-                    else { strm << NO_CONSTRAINT; }
-                    i++;
+                for (int i =0; i< _puzzlePiece::Dimension*2; i++){
+                //for (auto edge : *p) { //TODO: when we can colon-iterate over piece, would be nicer to use it here.
+                    int j = (i+timesRotated)%(2*_puzzlePiece::Dimension);
+                    if (booleanMask[i]) {
+                        strm << (*p)[j];
+                    }
+                    else {
+                        strm << NO_CONSTRAINT;
+                    }
                 }
                 key = strm.str();
                 if (_table.find(key) == _table.end()) { // key doesn't exist in map yet, so create an empty set
@@ -88,9 +92,9 @@ public:
     };
 
 
-    template <typename Iter> Groups(Iter b, Iter e){//TODO: really need this template?...
+    template <typename Iter> Groups(Iter b, Iter e, bool rotation = false){//TODO: really need this template?...
         for (; b != e; b++ ){
-            insertPiece(&(*b));
+            insertPiece(&(*b), rotation);
         }
     };
 

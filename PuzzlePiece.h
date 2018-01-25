@@ -30,7 +30,9 @@ protected:
 public:
     typedef int* iterator;
     typedef const int* const_iter;
-
+    int operator[](int i){
+        return _edges[i];
+    };
     virtual int getDim() = 0;
     virtual std::vector<int>& getEdges(){ return _edges;};
     friend std::ostream &operator << (std::ostream &os, PuzzlePiece& piece);
@@ -66,6 +68,7 @@ public:
     }
     typename PuzzlePiece::iterator end(){return &(_edges[Dimension * 2]);};
     typename PuzzlePiece::const_iter end() const{return &(_edges[Dimension * 2]);};
+
 };
 
 
